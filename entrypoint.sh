@@ -22,6 +22,7 @@ AUTH_HEADER="Authorization: token ${GITHUB_TOKEN}"
 
 number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
 title=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH")
+user=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
 
 # Try to get the JIRA ticket from the title
 TASK=$(echo "$title" | grep -E 'CN-[0-9]+' -o || true)
