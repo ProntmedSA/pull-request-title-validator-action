@@ -25,11 +25,11 @@ title=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH")
 user=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
 
 # Try to get the JIRA ticket from the title
-TASK=$(echo "$title" | grep -E '(CN|ARQ)-[0-9]+' -o || true)
+TASK=$(echo "$title" | grep -E "(CN|ARQ)-[0-9]+" -o || true)
 
 # If no JIRA ticket is included, request changes
 if [[ -z "$TASK" || "$TASK" == " " ]]; then
-  echo "No JIRA ticket found, requesting changes"
+  echo "No JIRA ticket found, requesting changes. PR Title: ${title}"
   curl -sSL \
       -H "${AUTH_HEADER}" \
       -H "${API_HEADER}" \
