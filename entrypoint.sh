@@ -25,7 +25,7 @@ title=$(jq --raw-output .pull_request.title "$GITHUB_EVENT_PATH")
 user=$(jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
 
 # Try to get the JIRA ticket from the title
-TASK=$(echo "$title" | grep -E "(CN|ARQ|B2B|B2D|CDS|ADP|PRJ)-[0-9]+" -o || true)
+TASK=$(echo "$title" | grep -E "(CN|ARQ|B2B|B2D|CDS|ADP|PRJ|PDP|PCS|RDF)-[0-9]+" -o || true)
 
 # If no JIRA ticket is included, request changes
 if [[ -z "$TASK" || "$TASK" == " " ]]; then
@@ -35,6 +35,6 @@ if [[ -z "$TASK" || "$TASK" == " " ]]; then
       -H "${API_HEADER}" \
       -X POST \
       -H "Content-Type: application/json" \
-      -d "{\"event\": \"REQUEST_CHANGES\",\"body\": \"@${user} o PR não possui o número do ticket do JIRA, por favor inclua um 'CN-XXXX/ARQ-XXXX/B2B-XXXX/B2D-XXXX/CDS-XXXX/ADP-XXXX/PRJ-XXXX | ' no início do título do seu PR\"}" \
+      -d "{\"event\": \"REQUEST_CHANGES\",\"body\": \"@${user} o PR não possui o número do ticket do JIRA, por favor inclua um 'CN-XXXX/ARQ-XXXX/B2B-XXXX/B2D-XXXX/CDS-XXXX/ADP-XXXX/PRJ-XXXX/PDP-XXXX/PCS-XXXX/RDF-XXXX | ' no início do título do seu PR\"}" \
       "${URI}/repos/${GITHUB_REPOSITORY}/pulls/${number}/reviews"
 fi
